@@ -1,7 +1,15 @@
 import random,time
 player_score = 0
 computer_score = 0
-options=['✊','✋','✌️','🦎','🖖']
+#options=['✊','✋','✌️','🦎','🖖']
+options = {
+    1: "✊ Rock",
+    2: "✋ Paper",
+    3: "✌️ Scissors",
+    4: "🦎 Lizard",
+    5: "🖖 Spock"
+}
+
 win_conditions = {
   1: [3, 4],  # Rock beats Scissors, Lizard
   2: [1, 5],  # Paper beats Rock, Spock
@@ -14,6 +22,27 @@ ntr_quotes = [
   "💥 Victory roars like Komaram Bheem!",
   "🎯 Precision. Power. Pure NTR Energy!"
 ]
+ntr_taunts = [
+  "😈 Even NTR has tough battles... Train harder and strike again!",
+  "🎬 NTR wouldn't quit — why should you?",
+  "🏹 You just faced a setback — time to roar like a Komaram Bheem!",
+]
+
+def explain_win(winner, loser):
+  actions = {
+    (1, 3): "Rock crushes Scissors",
+    (1, 4): "Rock crushes Lizard",
+    (2, 1): "Paper covers Rock",
+    (2, 5): "Paper disproves Spock",
+    (3, 2): "Scissors cuts Paper",
+    (3, 4): "Scissors decapitates Lizard",
+    (4, 2): "Lizard eats Paper",
+    (4, 5): "Lizard poisons Spock",
+    (5, 1): "Spock vaporizes Rock",
+    (5, 3): "Spock smashes Scissors"
+  }
+  return actions.get((winner, loser), "")
+
 while True:
   print("\n🎬 It's a WAR between you and the computer —")
   print("    Bigger than the battle between Hrithik and NTR in *War 2*! 💥\n")
@@ -22,11 +51,11 @@ while True:
   Rock Paper Scissors Lizard Spock
   ================================
 
-  1) ✊
-  2) ✋
-  3) ✌️
-  4) 🦎
-  5) 🖖
+  1) ✊ Rock
+  2) ✋ Paper
+  3) ✌️ Scissors
+  4) 🦎 Lizard
+  5) 🖖 Spock
   ''')
 
   try:
@@ -37,14 +66,14 @@ while True:
   except ValueError:
     print("❗ Invalid input. Please enter a number.")
     continue
-  print("You chose:", options[p-1])
+  print("You chose:", options[p])
   print("Computer is choosing", end="")
   for _ in range(3):
     print(".", end="", flush=True)
     time.sleep(0.4)
 
   c=random.randint(1,5)
-  print("\nComputer chose:", options[c-1])
+  print("\nComputer chose:", options[c])
   if(p==c):
     print("Tie...choose again!")
     continue
@@ -52,11 +81,14 @@ while True:
   if c in win_conditions[p]:
     player_score += 1
     print("🎉 You won!")
+    print(f"👉 {explain_win(p, c)}")
     print(random.choice(ntr_quotes))
   else:
     computer_score += 1
     print("💻 Computer won!")
-    print("😈 Even NTR has tough battles... Train harder and strike again!")
+    print(f"👉 {explain_win(c, p)}")
+    print(random.choice(ntr_taunts))
+
   print("----------------------------------------------")
   print(f"🏆 Score — You: {player_score} | Computer: {computer_score}")
   again = input("Play again? (y/n): ").strip().lower()
